@@ -1,21 +1,22 @@
 package com.example.administrator.timenote.Ui;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.os.StrictMode;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.PasswordTransformationMethod;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.administrator.timenote.Manager.UserManager.UserLogin;
 import com.example.administrator.timenote.R;
 
 
@@ -23,7 +24,13 @@ public class MainActivity extends AppCompatActivity {
 
     private EditText pwd,uesrid;
 
+    @Override
+    //访问网络同时加入这个
+    @SuppressLint("NewApi")
     protected void onCreate(Bundle savedInstanceState) {
+        //允许使用webervice同时启用网络访问
+        StrictMode.ThreadPolicy policy=new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.loading_layout);
         final Button button1= findViewById(R.id.loading_1);
@@ -66,6 +73,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String suesrid=uesrid.getText().toString();
                 String spwd=pwd.getText().toString();
+                UserLogin userLogin = new UserLogin();
+                userLogin.getRemoteInfo(suesrid);
 
                 //判断账号密码是否匹配，是则进入主界面，否则弹框提示
                 if((suesrid.equals("972357450@qq.com")==true)&& (spwd.equals("12263")==true))
